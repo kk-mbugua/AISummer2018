@@ -8,13 +8,14 @@ class Utility:
         return
 
     def get_utility(self, grid):
-        es = self.empty_squares(grid)
-        ev = self.edge_values(grid)
-        nd = self.neighbour_diff(grid)
-        ss = self.s_shape(grid)
-        mt = self.max_value(grid)
+        # es = self.empty_squares(grid)
+        # ev = self.edge_values(grid)
+        # nd = self.neighbour_diff(grid)
+        # ss = self.s_shape(grid)
+        # mt = self.max_value(grid)
+        ge = self.grid_eval(grid)
 
-        utility = nd*-0.5 + ev*2 + es*7 + ss*10 + mt*2
+        utility = ge #nd*-0.5 + ev*2 + es*7 + ss*10 + mt*2
         #print("search utility", utility)
         return utility
 
@@ -94,6 +95,24 @@ class Utility:
                     if pos_value == grid.getCellValue(n):
                         merges += 1
         return merges
+
+    def grid_eval(self, grid):
+        gradients = [
+            [[3, 2, 1, 0], [2, 1, 0, -1], [1, 0, -1, -2], [0, -1, -2, -3]],
+            [[0, 1, 2, 3], [-1, 0, 1, 2], [-2, -1, 0, 1], [-3, -2, -1, -0]],
+            [[0, -1, -2, -3], [1, 0, -1, -2], [2, 1, 0, -1], [3, 2, 1, 0]],
+            [[-3, -2, -1, 0], [-2, -1, 0, 1], [-1, 0, 1, 2], [0, 1, 2, 3]]
+        ]
+
+        values = [0, 0, 0, 0]
+
+        for i in range(4):
+            for x in range(4):
+                for y in range(4):
+                    values[i] += gradients[i][x][y] * grid.map[x][y]
+
+        return max(values)
+
 
 if __name__ == "__main__":
     grid = Grid()
