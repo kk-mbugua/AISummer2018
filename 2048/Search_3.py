@@ -10,6 +10,7 @@ class Search():
     def get_optimal_move(self, grid):
         return
 
+
     def to_file(self, data):
         file = open("time taken.txt", 'a')
         time_taken, moves_len, utility = data
